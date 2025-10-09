@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% block css %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head> 
+  <body>
+    <div>
+      <h1>Adopciones buxef</h1>
+    </div>
+    <div class="menu-nav">
+      <a href="{{ url_for('index') }}">Inicio</a>
+      <a href="{{ url_for('add_adopcion') }}">Agregar Adopcion</a>
+      <a href="{{ url_for('list_avisos', page_num=1) }}">Lista de adopciones</a>
+      <a href="{{ url_for('estadistica') }}">Estadisticas</a>
+    </div>
+  </body>
+  <section class="container">
+    {% block content %}{% endblock %} {% block javascript %}{% endblock %}
+  </section>
+</html>

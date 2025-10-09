@@ -1,0 +1,94 @@
+{% extends 'info/base.html' %}
+{% block title %} List Avisos {% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/avisos.css') }}"/>
+{% endblock %}
+
+{% block content %} 
+  
+  <div>
+    <h1>Listado de Avisos de adopcion</h1>
+  </div>
+
+  {% for i in range(avisos_in_page) %}
+  <div id={{ids[0][i]}} class="modal" hidden>
+    <div class="modal-contenido">
+      <span id={{ids[2][i]}} class="close">&times;</span>
+      <ul>
+        <li>Nombre del publicante del aviso: {{data[i].nombre}}</li>
+        <li>Animal en adopcion: {{data[i].cantidad}} {{data[i].tipo}} de {{data[i].edad}} {{data[i].um}}</li>
+        <li>Fecha disponible de entrega: {{data[i].fecha_entrega}}</li>
+        <li>email: {{data[i].email}}</li>
+        <li>Contactar por:
+        <ul>
+          {% if data[i].celular %}
+            <li>Telefono: {{data[i].celular}}</li>
+          {% endif %}
+          {% if data[i].contactos %}
+            {% for contacto in data[i].contactos %}
+            <li>{{contacto[0]}}: {{contacto[1]}}</li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+        </li>
+        <li>
+          Imagenes de la mascota:<br>
+          {% for j in range(cant_imgs[i]) %}
+          <img src="{{data[i].path_image[j]}}" alt="foto" width="320" height="240" id={{ids[3][i][j]}}><br>
+          {% endfor %}
+        </li>
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div>
+    <p>Haga click en un aviso par apoder saber mas :&rpar;</p>
+  </div>
+  <div class="tableAvisos">
+    <table>
+      <tr>
+        <th>Fecha publicacion</th>
+        <th>Fecha de entrega</th>
+        <th>Comuna</th>
+        <th>Sector</th>
+        <th>Cantidad, tipo y edad</th>
+        <th>Nombre y contacto</th>
+        <th>Foto</th>
+      </tr>
+      {% if data %}
+        {% for i in range(avisos_in_page)%}
+        <tr id={{ids[1][i]}}>
+          <td>{{data[i].fecha_ingreso}}</td>
+          <td>{{data[i].fecha_entrega}}</td>
+          <td>{{data[i].comuna}}</td>
+          <td>{{data[i].sector}}</td>
+          <td>{{data[i].cantidad}} {{data[i].tipo}}<br>{{data[i].edad}} {{data[i].um}}</td>
+          {% if data[i].celular %}
+            <td>{{data[i].nombre}}<br>Telefono: {{data[i].celular}}</td>
+          {% elif data[i].contactos %}
+            <td>{{data[i].nombre}}<br>{{data[i].contactos[0][0]}}: {{data[i].contactos[0][1]}}</td>
+          {% else %}
+            <td>{{data[i].nombre}}<br>email: {{data[i].email}}</td>
+          {% endif %}
+          <td><img src="{{data[i].path_image[0]}}" alt="foto" width="240" height="160"></td>
+        </tr>
+        {% endfor %}
+      {% endif %}
+    </table>
+  </div>
+  <ul class="pagination">
+  {% if page_num>1 %}
+    <li><a href="{{ url_for('list_avisos', page_num=page_num-1) }}">&lt;</a></li>
+  {% endif %}
+  {% if cant_pages>page_num %}
+    <li><a href="{{ url_for('list_avisos', page_num=page_num+1) }}">&gt;</a></li>
+  {% endif %}
+  </ul>
+{% endblock content %}
+
+{% block javascript %} 
+  <script src="{{ url_for('static', filename='js/listAvisos.js') }}"></script>
+{% endblock %}
+

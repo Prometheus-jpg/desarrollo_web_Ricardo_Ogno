@@ -1,0 +1,36 @@
+{% extends 'info/base.html' %}
+{% block title %} Portada {% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portada.css') }}"/>
+{% endblock %}
+
+{% block content %}  
+  <div>
+    <p>Bienvenido, en esta pagina puedes encontrar avisos de adopcion de perros y gatos y tambien podras crear un nuevo aviso de adopcion</p>
+  </div>
+  <div class="Table">
+    <table>
+      <tr>
+        <th>Fecha publicacion</th>
+        <th>Comuna</th>
+        <th>Sector</th>
+        <th>Cantidad, tipo y edad</th>
+        <th>Foto</th>
+      </tr>
+      {% if data %}
+        {% for aviso in data%}
+        <tr>
+          <th>{{aviso.date}}</th>
+          <th>{{aviso.comuna}}</th>
+          <th>{{aviso.sector}}</th>
+          <th>{{aviso.cantidad}} {{aviso.tipo}}\s<br>{{aviso.edad}} {{aviso.um}}</th>
+          <th><img src="{{aviso.path_image}}" alt="foto" width="240" height="160"></th>
+        </tr>
+        {% endfor%}
+      {% endif %}
+
+    </table>
+  </div>
+{% endblock content %}
+{% block javascript %} {% endblock %}

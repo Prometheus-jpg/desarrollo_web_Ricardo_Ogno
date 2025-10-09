@@ -1,0 +1,11 @@
+
+table {
+    border: thin solid;
+    width: 100%;
+    overflow-x: auto;
+}
+
+td,th {
+    border: thin solid;
+    width: 25%;
+}
