@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from flask_cors import cross_origin
 from database import db
 from utils.validation import *
 from werkzeug.utils import secure_filename
@@ -121,6 +122,7 @@ def list_avisos(page_num):
     close_ids = []
     img_ids = []
     cant_imgs = []
+    aviso_ids = []
     i=0
     for aviso in avisos:
 
@@ -168,14 +170,70 @@ def list_avisos(page_num):
         fila_ids.append(f"fila{i}")
         close_ids.append(f"close{i}")
         img_ids.append(img_aviso)
+        aviso_ids.append(aviso.id)
         i+=1
 
     return render_template("info/listAvisos.html", data=data, avisos_in_page=avisos_in_page,
     page_num=page_num, cant_avisos=cant_avisos, cant_imgs=cant_imgs,
-    cant_pages=cant_pages,ids=[modal_ids,fila_ids,close_ids,img_ids])
+    cant_pages=cant_pages,ids=[modal_ids,fila_ids,close_ids,img_ids,aviso_ids])
 
 @app.route("/estadisticas", methods=['GET'])
 def estadistica():
     return render_template("info/estadisticas.html")
 
+@app.route("/get-stats-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_stats_data():
+    fechas = db.get_fechas()
+    cant_p, cant_g = db.get_cant_avisos_per_type()
+    
+    dataFechas = [{
+        "date": fecha[0],
+        "count": fecha[1],  
+    } for fecha in fechas]
 
+    dataTipos = [{
+        "cant_p": cant_p,
+        "cant_g": cant_g
+    }]
+
+    dataTiposMes = [{
+        'meses': [],
+        'perros': [],
+        'gatos': []
+    }]
+    for k,v in db.avisos_porTipo_mes().items():
+        dataTiposMes[0]['meses'].append(k)
+        dataTiposMes[0]['perros'].append(v['perro'])
+        dataTiposMes[0]['gatos'].append(v['gato'])
+
+    return jsonify(dataFechas,dataTipos,dataTiposMes)
+
+@app.route("/get-comentarios", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_comentarios():
+    aviso_id = request.args.get("idAviso", type=int)
+    comentarios = db.get_comentarios_by_id(aviso_id)
+    data=[]
+    for comentario in comentarios:
+        data.append({
+            'nombre': comentario.nombre,
+            'comentario': comentario.texto,
+            'fecha': comentario.fecha
+        })
+    return jsonify(data)
+
+@app.route("/add-comentario", methods=["POST"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def add_comentario():
+    data = request.get_json()
+    nombre = data.get("nombre", "").strip()
+    comentario = data.get("comentario", "").strip()
+    fecha = datetime.now()
+    aviso_id = data.get("idAviso")
+
+    if not nombre or not comentario:
+        return jsonify({"status": "error", "data": "Faltan campos"}), 400
+    
+    db.add_comentario(nombre,comentario,fecha,aviso_id)
+    return jsonify({"status": "ok"})

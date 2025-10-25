@@ -39,12 +39,35 @@
           {% endfor %}
         </li>
       </ul>
+      <div class="div-Comentario">
+        <form class="formulario" name="formComentario{{ i }}" id="formComentario{{ i }}">
+            <div class="div-input">
+              <input name="nombre" id="nombre{{ i }}" type="text" minlength="3" maxlength="80" placeholder="Nombre" required>
+            </div>
+            <div class="div-input">
+              <textarea name="comentario" id="comentario{{ i }}" rows="4" cols="50"  minlength="4" placeholder="Agregue un Comentario" required></textarea>
+            </div>
+            <div class="div-button">
+              <button type="submit" id="enviarComentario{{ i }}">
+                Agregar Comentario
+              </button>
+            </div>
+          </form>
+          <div id="comentarios{{ i }}"></div>
+      </div>    
     </div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      await get_comentarios({{ i }}, {{ ids[4][i] | int}});
+      document.getElementById(`formComentario${ {{ i }} }`)
+        .addEventListener("submit", e => addComentario(e, {{ ids[4][i] | int}}, {{ i }}));
+    });
+  </script>
   {% endfor %}
 
   <div>
-    <p>Haga click en un aviso par apoder saber mas :&rpar;</p>
+    <p>Haga click en un aviso para poder saber mas :&rpar;</p>
   </div>
   <div class="tableAvisos">
     <table>

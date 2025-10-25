@@ -108,6 +108,21 @@ CREATE TABLE IF NOT EXISTS `tarea2`.`contactar_por` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `tarea2`.`comentario` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(80) NOT NULL,
+  `texto` VARCHAR(300) NOT NULL,
+  `fecha` TIMESTAMP NOT NULL,
+  `aviso_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_comentario_aviso1_idx` (`aviso_id` ASC),
+  CONSTRAINT `fk_comentario_aviso1`
+    FOREIGN KEY (`aviso_id`)
+    REFERENCES `tarea2`.`aviso_adopcion` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 INSERT INTO aviso_adopcion (fecha_ingreso,comuna_id,sector,nombre,email,celular,tipo,cantidad,edad,unidad_medida,fecha_entrega,descripcion) 
 VALUES ("2025-08-31 14:30",130210,"Plaza Ñuñoa","Tomas","tomas@gmail.com",NULL,'perro',3,3,'m',"2025-09-01 12:00",NULL);
 INSERT INTO aviso_adopcion (fecha_ingreso,comuna_id,sector,nombre,email,celular,tipo,cantidad,edad,unidad_medida,fecha_entrega,descripcion) 

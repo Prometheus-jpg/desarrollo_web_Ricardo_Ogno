@@ -11,23 +11,28 @@
     <h1>Estadisticas de adopcion</h1>
     <p>En este apartado se encuentra las estadisticas sobre los avisos de adopcion que a recibido la pagina.</p>
   </div>
-  <div class="grafico">
-    <h3>Grafico avisos por dia</h3>
-    <p>Este grafico muestra la cantidad de avisos de adopcion en los ultimos 15 dias</p><br>
-    <img src="{{ url_for('static', filename='img/firstplt.png') }}" alt="grafico" width="600" height="500">
-  </div>
+  <figure class="highcharts-figure">
+    <div id="avisosPorDia"></div>
+  </figure>
   <div class="grafico">
     <h3>Grafico proporcion perro/gato</h3>
     <p>Este grafico muestra las proporciones de perros y gatos de la cantidad total de avisos de adopcion</p><br>
-    <img src="{{ url_for('static', filename='img/chart.png') }}" alt="grafico" width="500" height="500">
   </div>
+  <figure class="highcharts-figure">
+    <div id="avisosPorTipo"></div>
+  </figure>
   <div class="grafico">
     <h3>Grafico avisos por mes</h3>
     <p>Este grafico muestra la cantidad de avisos de adopcion de perros y gatos en los ultimos 5 meses</p><br>
-    <img src="{{ url_for('static', filename='img/secplt.png') }}" alt="grafico" width="700" height="525">
+  <figure class="highcharts-figure">
+    <div id="avisosPorTipoMes"></div>
+  </figure>
   </div>
 
 {% endblock content %}
-{% block javascript %} {% endblock %}
+{% block javascript %} 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="{{url_for('static', filename='js/stats.js')}}"></script>
+{% endblock %}
 
 

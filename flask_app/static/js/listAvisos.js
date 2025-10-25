@@ -23,3 +23,44 @@ for (let i=0;i<5;i++) {
       }
     }
 }
+
+async function get_comentarios(comentario_id, idAviso) {
+  const res = await fetch(`${window.origin}/get-comentarios?idAviso=${idAviso}`);
+  const data = await res.json();
+  console.log("Comentarios cargados:", data);
+  const divComentarios = document.getElementById(`comentarios${comentario_id}`);
+  divComentarios.innerHTML = "";
+
+  for (let i=0; i<data.length; i++) {
+    const newDiv = document.createElement("div");
+    newDiv.classList.add("comentario");
+    newDiv.innerHTML = `<p>${data[i].nombre} - ${data[i].fecha}</p><p>${data[i].comentario}</p>`;
+    divComentarios.appendChild(newDiv);
+  }
+}
+
+async function addComentario(event, idAviso, num) {
+  event.preventDefault();
+
+  const nombre = document.getElementById(`nombre${num}`).value;
+  const comentario = document.getElementById(`comentario${num}`).value;
+  try {
+    const res = await fetch(`${window.origin}/add-comentario`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombre, comentario, idAviso: idAviso })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      alert("Error: " + error.error);
+      return;
+    }
+
+    document.getElementById(`formComentario${num}`).reset();
+    await get_comentarios({num}, idAviso);
+
+  } catch (err) {
+    console.error("Error al enviar comentario:", err);
+  }
+}

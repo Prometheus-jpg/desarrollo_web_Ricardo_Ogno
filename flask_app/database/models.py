@@ -36,6 +36,7 @@ class AvisoAdopcion(Base):
 	comuna = relationship("Comuna", back_populates="avisos")
 	fotos = relationship("Foto", back_populates="aviso")
 	contactos = relationship("ContactarPor", back_populates="aviso")
+	comentarios = relationship("Comentario", back_populates="aviso")
 
 
 class Foto(Base):
@@ -50,4 +51,10 @@ class ContactarPor(Base):
 	__table_args__ = {"autoload_with": engine}
 
 	aviso = relationship("AvisoAdopcion", back_populates="contactos")
+
+class Comentario(Base):
+	__tablename__ = "comentario"
+	__table_args__ = {"autoload_with": engine}
+
+	aviso = relationship("AvisoAdopcion", back_populates="comentarios")
 	
