@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Avisos Calificados</title>  
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+		<link rel="stylesheet" th:href="@{/css/modal.css}" />
+	</head>
+	
+	<body>
+		<div th:replace="~{nav :: navbar}"></div>
+
+		<section class="container">
+			<div class="tableAvisos">
+				<table>
+				<tr>
+					<th class="thId">ID</th>
+					<th>Fecha publicacion</th>
+					<th>Comuna</th>
+					<th>Sector</th>
+					<th>Cantidad, tipo y edad</th>
+					<th>Nota</th>
+					<th></th>
+				</tr>
+					<tr th:each="aviso, avisoStat : ${data}" th:id="'fila' + ${avisoStat.index}">
+						<td th:text="${aviso.id}" th:class="thId"></td>
+						<td th:text="${aviso.fecha}"></td>
+						<td th:text="${aviso.comuna}"></td>
+						<td th:text="${aviso.sector}"></td>
+						<td th:utext="${aviso.cantTipoEdadUm}"></td>
+						<td th:id="'notaAviso' + ${aviso.id}"></td>
+						<td><button type="button" th:text="evaluar" th:onclick="'openModal(__${aviso.id}__)'"></button></td>
+						<script th:inline="javascript">
+							document.addEventListener("DOMContentLoaded", async () => {
+      							await get_Notas([(${aviso.id})]);
+							});
+						</script>
+					</tr>
+				</table>
+			</div>
+
+				<div class="modal" id="modal">
+					<div class="modal-contenido">
+						<span class="close">&times;</span>
+						<h2>Califique este Aviso</h2>
+						<p>Seleccionar una nota entre 1 y 7</p>
+						<div id="calificacion">
+						<form class="form" id="form">
+							<label for="nota">Nota: </label>
+							<input id="nota" name="nota" type="number" min="1" max="7">	
+							<button type="submit" id="calificar" disabled>Calificar</button>
+						</form>
+							
+						</div>
+					</div>
+				</div>
+
+		</section>
+		<script th:src="@{/js/modal.js}"></script>
+		<script th:src="@{/js/updateNota.js}"></script>
+	</body>
+</html>
