@@ -1,13 +1,37 @@
-*Decisiones que tome al realizar la tarea*
+# Aplicación Web de Adopción de Mascotas  
 
-1. En el input de la fecha de entrega el prellenado se considera la hora actual mas 3 horas (como en el enunciado) a menos que la hora sea despues de las 21 horas, en ese caso la hora de prellenado es las 8 am del siguiente dia
+Proyecto en el que se desarrolla una pagina web que realiza la gestion del proceso de adopcion, incluyendo la recepción de información de perros o gatos en adopción, ofrecer listados de todos los animales que están en adopción y ver la información detallada de una publicación de adopción. 
 
-2. En la lista de avisos de adopciones al momento de seleccionar una fila cuando se pasa el mouse sobre las fotos estas aumentan su tamaño y al sacar el mouse de encima se muestra del tamaño original
+## Tecnologías utilizadas
+- **Backend**: Python, Flask, MySQL con SQLAlchemy
+- **Frontend**: HTML, CSS, JavaScript
 
-*Tarea 2*
+## Iniciar aplicacion
 
-3. En tarea2.sql se añaden 5 avisos de prueba a la base de datos (fotos y contactos), asi ya hay datos para mostrar en la pagina.
+### Intalacion requerida 
 
-4. Para hacer la paginacion me guie de este video https://youtu.be/jUVPtMnbuv4?si=bchic_2wwOaTKwq0, en el vido no esta ocupando flask pero es la misma idea.
+Para ejecutar la aplicación se necesita tener instalado el framework Flask y las distintas bibliotecas utilizadas en este proyecto, para esto dentro del directorio flask_app ejecute lo
+siguiente en una terminal, se aconseja primero crear un ambiente virtual.
 
-5. En la tarea 1, para las paginas con el listado de avisos y el de estadistica se tienen un boton al final de la pagina para poder volver a la portada, pero para esta tarea se cambio por un menu nav que gracias a jinja esta en base.html y tanto la portada, la lista de avisos y estadisticas extienden.
+```bash
+pip install -r requirements.txt
+```
+### Ejecutar aplicacion
+
+Si es la primera vez que inicia la aplicación debe correr la base de datos, para esto debe ejecutar los siguientes archivos:
+```
+flask_app
+└── database
+    ├── create-user.sql
+    ├── region-comuna.sql
+    └── tarea2.sql
+```
+
+Finalmente puede ejecutar la aplicacion con:
+
+```bash
+flask run
+```
+Esto iniciara la aplicación localmente y para ingresar diríjase a la dirección indicada en la terminal para ver la aplicación web en funcionamiento.
+
+Para salir del servidor presione `CTRL + C` en la terminal.
